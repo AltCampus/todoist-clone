@@ -4,6 +4,7 @@ import Apollo from "./Apollo";
 import Home from "./Components/Home";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
+import Login from "./Components/Login";
 
 async function setToken(getToken) {
   let token = await getToken({});
@@ -44,9 +45,12 @@ function App() {
           <Home data={{ user, logout, loginWithRedirect, isAuthenticated }} />
         </Route>
         <Route exact path="/dashboard">
-          {isAuthenticated ? <Dashboard data={{logout,user}} /> : ""}
+          {isAuthenticated ? <Dashboard data={{ logout, user }} /> : ""}
         </Route>
         {isAuthenticated ? <Apollo /> : ""}
+        <Route exact path="/login">
+          <Login />
+        </Route>
       </Switch>
     </Router>
   );
