@@ -1,58 +1,60 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import Apollo from "./Apollo";
 import Home from "./Components/Home";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
 import Login from "./Components/Login";
 
-async function setToken(getToken) {
-  let token = await getToken({});
-  localStorage.setItem("accessToken", token);
-}
+import { ApolloProvider } from "@apollo/client";
+
+import {
+  ApolloClient,
+  ApolloLink,
+  InMemoryCache,
+  HttpLink,
+} from "apollo-boost";
+
+const httpLink = new HttpLink({
+  uri: "https://glad-pipefish-27.hasura.app/v1/graphql",
+});
+
+const authLink = new ApolloLink((operation, forward) => {
+ 
+  operation.setContext({
+    headers: {
+      "x-hasura-admin-secret": "123456789",
+    },
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink), // Chain it with the HttpLink
+  cache: new InMemoryCache(),
+});
+
 
 function App() {
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
-
-  if (isLoading) {
-    return (
-      <div class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-    );
-  }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
-
-  if (isAuthenticated) {
-    setToken(getAccessTokenSilently);
-  }
 
   return (
+    <ApolloProvider client={client}>
     <Router>
       <Switch>
         <Route exact path="/">
-          <Home data={{ user, logout, loginWithRedirect, isAuthenticated }} />
+          <Home />
         </Route>
+
         <Route exact path="/dashboard">
-          {isAuthenticated ? <Dashboard data={{ logout, user }} /> : ""}
+          <Dashboard /> 
         </Route>
-        {isAuthenticated ? <Apollo /> : ""}
+        
         <Route exact path="/login">
           <Login />
         </Route>
+
       </Switch>
     </Router>
+    </ApolloProvider> 
   );
 }
 

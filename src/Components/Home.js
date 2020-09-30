@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as Logo } from "../assets/images/logo.svg";
-import {ReactComponent as BigLogo } from '../assets/images/todoistLogoBig.svg'
+import { ReactComponent as BigLogo } from "../assets/images/todoistLogoBig.svg";
+import { ReactComponent as LogoSmall } from "../assets/images/logoSmall.svg";
 
 function Home(props) {
   console.log(props);
@@ -11,16 +12,7 @@ function Home(props) {
       <nav id="header" className="w-full z-30 top-0 py-1">
         <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
           <label for="menu-toggle" className="cursor-pointer md:hidden block">
-            <svg
-              className="fill-current text-gray-900"
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-            >
-              <title>menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-            </svg>
+            <LogoSmall />
           </label>
           <input className="hidden" type="checkbox" id="menu-toggle" />
 
@@ -64,9 +56,9 @@ function Home(props) {
             className="order-2 md:order-3 flex items-center"
             id="nav-content"
           >
-            {props.data.isAuthenticated ? (
+            {localStorage.length ? (
               <>
-                Welcome, {props.data.user.nickname}
+                Welcome, Mayank{/*{props.data.user.nickname} */}
                 <div className="inline-block no-underline hover:text-black hover:underline py-2 px-4">
                   <Link to="/dashboard">
                     <Logo />
@@ -75,23 +67,20 @@ function Home(props) {
                 <button
                   className="inline-block no-underline hover:text-black hover:underline py-2 px-4"
                   onClick={() => {
-                    props.data.logout({ returnTo: "http://localhost:3000" });
+                    localStorage.clear();
                   }}
                 >
-                  Log out
+                  <NavLink to="/login">Log out</NavLink>
                 </button>
               </>
             ) : (
               <button
                 className="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                onClick={props.data.loginWithRedirect}
+                // onClick={props.data.loginWithRedirect}
               >
-                Log in
+                <NavLink to="/login">Log in</NavLink>
               </button>
             )}
-            {/* <button className="inline-block no-underline hover:text-black hover:underline py-2 px-4">
-              <NavLink to="/login">Log in</NavLink>
-            </button> */}
           </div>
         </div>
       </nav>

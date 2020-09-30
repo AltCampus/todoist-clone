@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import todoistLogin from "../assets/images/todoist-login.webp";
 
 function Login() {
@@ -16,6 +17,8 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem("adminSecret", loginDetails.adminSecret);
+    localStorage.setItem("endPoint", loginDetails.endpoint);
   };
 
   return (
@@ -92,7 +95,7 @@ function Login() {
                     className="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow bg-opacity-70"
                     onClick={handleSubmit}
                   >
-                    Login
+                    <NavLink to="/dashboard">Login</NavLink>
                   </button>
                 ) : (
                   <button
