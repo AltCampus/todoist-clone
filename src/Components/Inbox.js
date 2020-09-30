@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import {ADD_PERSONAL_TASK} from "../queries/index";
+import { ADD_PERSONAL_TASK } from "../queries/index";
 
 import { useMutation } from "@apollo/react-hooks";
 
@@ -8,27 +8,36 @@ import Todo from "./Todo";
 
 function Inbox() {
   const initialTask = { title: "", is_completed: false };
-  
+
   const [input, setInput] = useState(false);
   const [tasks, setTasks] = useState(initialTask);
-  const [insertedData, setInsertedDats] = useState({})
-  const [addTask, { loading, error }, data] = useMutation(ADD_PERSONAL_TASK, {update: (proxy, {data: {insert_tasks: {returning}}}) => {
-    setInsertedDats(returning[0])
-  }});
+  const [insertedData, setInsertedDats] = useState({});
+  const [addTask, { loading, error }, data] = useMutation(ADD_PERSONAL_TASK, {
+    update: (
+      proxy,
+      {
+        data: {
+          insert_tasks: { returning },
+        },
+      }
+    ) => {
+      setInsertedDats(returning[0]);
+    },
+  });
 
   const handleInput = (e) => {
     setTasks({ ...tasks, title: e.target.value });
   };
 
-  const handleSubmit = () => {  
+  const handleSubmit = () => {
     addTask({
       variables: {
         title: tasks.title,
-        task_id: Math.floor(Math.random(1000)*13*19)+"",
-      }
-    })
+        task_id: Math.floor(Math.random(1000) * 13 * 19) + "",
+      },
+    });
     setInput("");
-    return setTasks("")
+    return setTasks("");
   };
 
   const handleCancel = () => {
@@ -39,7 +48,6 @@ function Inbox() {
   return (
     <>
       <div className="container relative px-2 py-3 leading-none navbar-expand-lg mb-3 w-9/12">
-      
         <div className="w-full  mx-auto flex flex-wrap justify-between items-center text-lg">
           <div className="w-full relative flex lg:w-auto lg:static lg:block">
             <NavLink
@@ -81,7 +89,6 @@ function Inbox() {
               </li>
             </ul>
           </div>
-          
         </div>
         <Todo insertedData={insertedData || null} />
         {input ? (
@@ -110,7 +117,6 @@ function Inbox() {
           ""
         )}
       </div>
-      
     </>
   );
 }

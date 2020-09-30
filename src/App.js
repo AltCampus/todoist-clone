@@ -2,6 +2,7 @@ import React from "react";
 import Home from "./Components/Home";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
+import Login from "./Components/Login";
 
 import { ApolloProvider } from "@apollo/client";
 
@@ -40,14 +41,17 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-         
           <Home />
         </Route>
+
         <Route exact path="/dashboard">
-          <Dashboard />
-         
+          <Dashboard /> 
         </Route>
         
+        <Route exact path="/login">
+          <Login />
+        </Route>
+
       </Switch>
     </Router>
     </ApolloProvider> 
