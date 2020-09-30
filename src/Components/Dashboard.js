@@ -26,13 +26,13 @@ function Dashboard(props) {
     setActiveList(list.name);
     setActiveComponent(list.component);
   };
-  console.log(props);
+  
   return (
     <>
-      <div class=" text-gray-900 tracking-wider leading-normal">
-        <nav id="header" class="bg-white fixed w-full z-10 top-0 shadow">
-          <div class="w-full container mx-auto flex flex-wrap items-center justify-between my-4">
-            <div class="pl-4 md:pl-0">
+      <div className=" text-gray-900 tracking-wider leading-normal">
+        <nav id="header" className="bg-white fixed w-full z-10 top-0 shadow">
+          <div className="w-full container mx-auto flex flex-wrap items-center justify-between my-4">
+            <div className="pl-4 md:pl-0">
               <Link
                 className="flex items-center tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
                 to="/"
@@ -40,7 +40,7 @@ function Dashboard(props) {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   id="Capa_1"
-                  enable-background="new 0 0 512 512"
+                  enableBackground="new 0 0 512 512"
                   height="51"
                   viewBox="0 0 512 512"
                   width="51"
@@ -95,15 +95,15 @@ function Dashboard(props) {
                 <br />
               </Link>
             </div>
-            Welcome, {props.data.user.nickname}
-            <div class="pr-0 flex justify-end">
-              <div class="flex relative inline-block float-right">
-                <div class="relative inline-block text-left">
+            Welcome, Mayank 
+            <div className="pr-0 flex justify-end">
+              <div className="flex relative inline-block float-right">
+                <div className="relative inline-block text-left">
                   <div>
-                    <span class="rounded-md shadow-sm">
+                    <span className="rounded-md shadow-sm">
                       <button
                         type="button"
-                        class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150"
+                        className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150"
                         id="options-menu"
                         aria-haspopup="true"
                         aria-expanded="false"
@@ -114,47 +114,47 @@ function Dashboard(props) {
                           width="24"
                           height="24"
                           viewBox="0 0 24 24"
-                          class="gear_normal"
+                          className="gear_normal"
                         >
                           <path
                             fill="currentColor"
-                            fill-rule="nonzero"
+                            fillRule="nonzero"
                             d="M16.523 6.38l1.193-.598a1 1 0 0 1 1.314.394l1.529 2.648a1 1 0 0 1-.317 1.335l-1.204.793a7.263 7.263 0 0 1-.026 2.079l1.23.81a1 1 0 0 1 .317 1.335l-1.529 2.648a1 1 0 0 1-1.314.394l-1.345-.674a7.194 7.194 0 0 1-1.757 1.027l-.087 1.488a1 1 0 0 1-.998.941H10.47a1 1 0 0 1-.998-.941L9.39 18.65a7.188 7.188 0 0 1-1.883-1.045l-1.223.613a1 1 0 0 1-1.314-.394l-1.529-2.648a1 1 0 0 1 .317-1.335l1.05-.692a7.242 7.242 0 0 1-.03-2.318l-1.02-.672a1 1 0 0 1-.317-1.335L4.97 6.176a1 1 0 0 1 1.314-.394l1.068.536a7.191 7.191 0 0 1 2.05-1.173l.071-1.204A1 1 0 0 1 10.471 3h3.058a1 1 0 0 1 .998.941l.075 1.283a7.197 7.197 0 0 1 1.921 1.156zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
                           ></path>
                         </svg>
                         <svg
-                          class="-mr-1 ml-2 h-5 w-5"
+                          className="-mr-1 ml-2 h-5 w-5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         {/* List of dropdown */}
                         <div
-                          class={`${
+                          className={`${
                             dropdown ? "" : "hidden"
                           } origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg`}
                         >
                           <div
-                            class="rounded-md bg-white shadow-xs"
+                            className="rounded-md bg-white shadow-xs"
                             role="menu"
                             aria-orientation="vertical"
                             aria-labelledby="options-menu"
                           >
-                            <div class="py-1">
+                            <div className="py-1">
                               <a
-                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                                className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                                 role="menuitem"
                               >
                                 Setting
                               </a>
                               <a
                                 onClick={() => props.data.logout()}
-                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                                className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                                 role="menuitem"
                               >
                                 Log out
@@ -172,24 +172,25 @@ function Dashboard(props) {
           </div>
         </nav>
         {/* <!--Container--> */}
-        <div class="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16">
-          <div class="w-full lg:w-1/5 px-6 text-xl text-gray-800 leading-normal">
-            <p class="text-base font-bold py-2 lg:pb-6 text-gray-700">Menu</p>
-            <div class="block lg:hidden sticky inset-0"></div>
+        <div className="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16">
+          <div className="w-full lg:w-1/5 px-6 text-xl text-gray-800 leading-normal">
+            <p className="text-base font-bold py-2 lg:pb-6 text-gray-700">Menu</p>
+            <div className="block lg:hidden sticky inset-0"></div>
             <div style={{ top: "6em" }} id="menu-content">
-              <ul class="list-reset py-2 md:py-0">
-                {List.map((list) => {
+              <ul className="list-reset py-2 md:py-0">
+                {List.map((list, index) => {
                   return (
                     <li
+                      key={`list${index}`}
                       onClick={() => handleChange(list)}
-                      class={`py-1 md:my-2 hover:bg-orange-100 lg:hover:bg-transparent border-l-4 border-transparent ${
+                      className={`py-1 md:my-2 hover:bg-orange-100 lg:hover:bg-transparent cursor-pointer border-l-4 border-transparent ${
                         activeList == list.name
                           ? "font-bold border-orange-600"
                           : ""
                       }`}
                     >
-                      <a class="block pl-4 align-middle text-gray-700 no-underline hover:text-orange-600">
-                        <span class="pb-1 md:pb-0 text-sm">{list.name}</span>
+                      <a className="block pl-4 align-middle text-gray-700 no-underline hover:text-orange-600">
+                        <span className="pb-1 md:pb-0 text-sm">{list.name}</span>
                       </a>
                     </li>
                   );

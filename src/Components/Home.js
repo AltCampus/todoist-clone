@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 function Home(props) {
@@ -112,9 +112,9 @@ function Home(props) {
             className="order-2 md:order-3 flex items-center"
             id="nav-content"
           >
-            {props.data.isAuthenticated ? (
+            {/* {props.data.isAuthenticated ? ( */}
               <>
-                Welcome, {props.data.user.nickname}
+                 Welcome, Mayank{/*{props.data.user.nickname} */}
                 <div className="inline-block no-underline hover:text-black hover:underline py-2 px-4">
                   <Link to="/dashboard">
                     <svg
@@ -178,21 +178,21 @@ function Home(props) {
                 </div>
                 <button
                   className="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                  onClick={() => {
-                    props.data.logout({ returnTo: "http://localhost:3000" });
-                  }}
+                  // onClick={() => {
+                  //   props.data.logout({ returnTo: "http://localhost:3000" });
+                  // }}
                 >
                   Log out
                 </button>
               </>
-            ) : (
+            {/* ) : ( */}
               <button
                 className="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                onClick={props.data.loginWithRedirect}
+                // onClick={props.data.loginWithRedirect}
               >
                 Log in
               </button>
-            )}
+            {/* )} */}
           </div>
         </div>
       </nav>
