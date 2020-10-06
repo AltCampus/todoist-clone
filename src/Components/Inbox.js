@@ -25,15 +25,17 @@ function Inbox() {
         },
       }
     ) => {
-      setInsertedDats(returning[0]);
+      // setInsertedDats(returning[0]);
+      if(returning[0])
+      context.dispatch({ type: INSERT_PERSONAL_TASK, payload: returning[0] });
     },
   });
 
-  useEffect(() => {
-    if (insertedData) {
-      context.dispatch({ type: INSERT_PERSONAL_TASK, payload: insertedData });
-    }
-  }, [insertedData]);
+  // useEffect(() => {
+  //   if (insertedData) {
+  //     context.dispatch({ type: INSERT_PERSONAL_TASK, payload: insertedData });
+  //   }
+  // }, [insertedData]);
 
   const handleInput = (e) => {
     setTasks({ ...tasks, title: e.target.value });

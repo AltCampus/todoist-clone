@@ -13,11 +13,12 @@ import { useMutation } from "@apollo/react-hooks";
 function Todo({ insertedData }) {
   const [updatedTask, setupdatedTask] = useState("");
   const [editTask, setEditTask] = useState("");
+  
 
   const [iconVisibility, setVisibility] = useState("");
   const context = useContext(TodoContext); // Contetx
   var { loading, error, data } = useQuery(ALL_PERSONAL_TASKS);
-
+  
   const [
     toggleIsCompleted,
     { updateloading, updateerror },
@@ -36,10 +37,13 @@ function Todo({ insertedData }) {
   });
 
   useEffect(() => {
-    if (data && !loading) {
+    let {state: {personal_tasks}} = context;
+    if (data && !loading && !personal_tasks.length) {
       context.dispatch({ type: FETCH_ALL_PERSONAL_TASK, payload: data.tasks });
     }
   }, [data]);
+
+  
 
   const handleCheck = (taskId, is_completed) => {
     toggleIsCompleted({
@@ -63,7 +67,7 @@ function Todo({ insertedData }) {
             return <></>;
           }
           return (
-            <>
+            <React.Fragment key={task.task_id}>
               {task.task_id !== editTask ? (
                 <>
                   <div
@@ -114,7 +118,7 @@ function Todo({ insertedData }) {
               ) : (
                 <>Render EditTask component</>
               )}
-            </>
+            </React.Fragment>
           );
         })}
     </div>
