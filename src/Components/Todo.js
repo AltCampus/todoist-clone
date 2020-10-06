@@ -10,7 +10,7 @@ import {
 } from "../store/action/type";
 import { useMutation } from "@apollo/react-hooks";
 
-function Todo({ insertedData }) {
+function Todo({ insertedData, isShowingCompletedTasks }) {
   const [updatedTask, setupdatedTask] = useState("");
   const [editTask, setEditTask] = useState("");
   
@@ -63,7 +63,7 @@ function Todo({ insertedData }) {
     <div className="w-full">
       {context.state.personal_tasks &&
         context.state.personal_tasks.map((task) => {
-          if (task.is_completed) {
+          if (task.is_completed !== isShowingCompletedTasks) {
             return <></>;
           }
           return (
@@ -89,7 +89,7 @@ function Todo({ insertedData }) {
                             ) : (
                               <i className="far fa-circle cursor-pointer"></i>
                             )}
-                            <span className="ml-2 cursor-pointer">
+                            <span className= {isShowingCompletedTasks ? "line-through ml-2 cursor-pointer":"ml-2 cursor-pointer"}>
                               {task.title}
                             </span>
                           </div>
