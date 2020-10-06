@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { ADD_PERSONAL_TASK } from "../queries/index";
 import CompletedTasks from "./CompletedTasks";
-import { useMutation } from "@apollo/react-hooks";
+import { TodoContext } from "../App";
+import {INSERT_PERSONAL_TASK} from "../store/action/type";
 
+import { useMutation } from "@apollo/react-hooks";
 import Todo from "./Todo";
+
+
+
 
 function Inbox() {
   const initialTask = { title: "", is_completed: false };
-
+  const context = useContext(TodoContext); // Contetx
   const [input, setInput] = useState(false);
   const [tasks, setTasks] = useState(initialTask);
   const [insertedData, setInsertedDats] = useState({});
@@ -35,6 +40,12 @@ function Inbox() {
       setInsertedDats(returning[0]);
     },
   });
+
+  useEffect(() => {
+    if (insertedData) {
+      context.dispatch({ type: INSERT_PERSONAL_TASK, payload: insertedData });
+    }
+  }, [insertedData]);
 
   const handleInput = (e) => {
     setTasks({ ...tasks, title: e.target.value });
@@ -129,7 +140,7 @@ function Inbox() {
             </ul>
           </div>
         </div>
-        <Todo insertedData={insertedData || null} />
+        <Todo  />
         {input ? (
           <div className="w-full border-2 border-gray-300 rounded-md p-2">
             <input

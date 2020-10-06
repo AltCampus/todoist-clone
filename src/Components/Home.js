@@ -56,7 +56,8 @@ function Home(props) {
             className="order-2 md:order-3 flex items-center"
             id="nav-content"
           >
-            {localStorage.adminSecret && localStorage.endPoint ? (
+            {localStorage.getItem("adminSecret") &&
+            localStorage.getItem("endPoint") ? (
               <>
                 Welcome, Mayank{/*{props.data.user.nickname} */}
                 <div className="inline-block no-underline hover:text-black hover:underline py-2 px-4">

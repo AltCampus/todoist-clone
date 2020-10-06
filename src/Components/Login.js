@@ -28,12 +28,13 @@ function Login() {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        opacity:0.95,
         height: "100vh",
       }}
       className="w-full"
     >
       <div className="container mx-auto p-8 flex w-full ">
-        <div className="absolute max-w-md w-full mx-auto pt-64 top-0 right-0 ">
+        <div className="absolute max-w-md max-w-4xl mx-auto pt-12 px-8 top-0 right-0 place-self-start">
           <div className="bg-white rounded-lg overflow-hidden shadow-2xl bg-opacity-75">
             <div className="p-8">
               <form>
