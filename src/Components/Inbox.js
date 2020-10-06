@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { ADD_PERSONAL_TASK } from "../queries/index";
+import CompletedTasks from "./CompletedTasks";
 import { TodoContext } from "../App";
 import {INSERT_PERSONAL_TASK} from "../store/action/type";
 
@@ -16,6 +17,17 @@ function Inbox() {
   const [input, setInput] = useState(false);
   const [tasks, setTasks] = useState(initialTask);
   const [insertedData, setInsertedDats] = useState({});
+  const [dropDown, setdropDown] = useState(false);
+  const [showTask, setCompletedTask] = useState(false);
+
+  const showDropdown = () => {
+    setdropDown(!dropDown);
+  };
+
+  const showCompleted = () => {
+    setCompletedTask(!showTask);
+  };
+
   const [addTask, { loading, error }, data] = useMutation(ADD_PERSONAL_TASK, {
     update: (
       proxy,
@@ -91,13 +103,41 @@ function Inbox() {
                   <i className="fas fa-plus"></i>
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink
-                  className="px-3 py-2 flex text-xs uppercase font-bold leading-snug text-black hover:opacity-75"
-                  to="#pablo"
-                >
-                  <i className="fas fa-ellipsis-h"></i>
-                </NavLink>
+              <li className="nav-item ml-1">
+                <i
+                  class="fas fa-ellipsis-v cursor-pointer"
+                  onClick={showDropdown}
+                />
+                {dropDown ? (
+                  <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
+                    <div className="rounded-md bg-white shadow-xs">
+                      <div
+                        className="py-1"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="options-menu"
+                      >
+                        <NavLink
+                          to="#"
+                          className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                          role="menuitem"
+                          onClick={showCompleted}
+                        >
+                          Show Completed Tasks
+                        </NavLink>
+                        <NavLink
+                          to="#"
+                          className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                          role="menuitem"
+                        >
+                          Delete
+                        </NavLink>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </li>
             </ul>
           </div>
@@ -128,6 +168,7 @@ function Inbox() {
         ) : (
           ""
         )}
+        {showTask ? <CompletedTasks /> : ""}
       </div>
     </>
   );
