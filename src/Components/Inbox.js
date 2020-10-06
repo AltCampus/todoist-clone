@@ -3,20 +3,17 @@ import { NavLink } from "react-router-dom";
 import { ADD_PERSONAL_TASK } from "../queries/index";
 import CompletedTasks from "./CompletedTasks";
 import { TodoContext } from "../App";
-import {INSERT_PERSONAL_TASK} from "../store/action/type";
+import { INSERT_PERSONAL_TASK } from "../store/action/type";
 
 import { useMutation } from "@apollo/react-hooks";
 import Todo from "./Todo";
-
-
-
 
 function Inbox() {
   const initialTask = { title: "", is_completed: false };
   const context = useContext(TodoContext); // Contetx
   const [input, setInput] = useState(false);
   const [tasks, setTasks] = useState(initialTask);
-  const [insertedData, setInsertedDats] = useState({});
+  const [taskFilteredOn, setTaskFilteredOn] = useState("All Completed Task");
   const [dropDown, setdropDown] = useState(false);
   const [showTask, setCompletedTask] = useState(false);
 
@@ -26,6 +23,12 @@ function Inbox() {
 
   const showCompleted = () => {
     setCompletedTask(!showTask);
+    setdropDown(!dropDown);
+    if (taskFilteredOn === "All Completed Task") {
+      setTaskFilteredOn("All Incomplete Task");
+    } else {
+      setTaskFilteredOn("All Completed Task");
+    }
   };
 
   const [addTask, { loading, error }, data] = useMutation(ADD_PERSONAL_TASK, {
@@ -38,16 +41,10 @@ function Inbox() {
       }
     ) => {
       // setInsertedDats(returning[0]);
-      if(returning[0])
-      context.dispatch({ type: INSERT_PERSONAL_TASK, payload: returning[0] });
+      if (returning[0])
+        context.dispatch({ type: INSERT_PERSONAL_TASK, payload: returning[0] });
     },
   });
-
-  // useEffect(() => {
-  //   if (insertedData) {
-  //     context.dispatch({ type: INSERT_PERSONAL_TASK, payload: insertedData });
-  //   }
-  // }, [insertedData]);
 
   const handleInput = (e) => {
     setTasks({ ...tasks, title: e.target.value });
@@ -123,7 +120,7 @@ function Inbox() {
                           role="menuitem"
                           onClick={showCompleted}
                         >
-                          Show Completed Tasks
+                          Show {taskFilteredOn}
                         </NavLink>
                         <NavLink
                           to="#"
@@ -142,7 +139,7 @@ function Inbox() {
             </ul>
           </div>
         </div>
-        <Todo  />
+        <Todo isShowingCompletedTasks={showTask} />
         {input ? (
           <div className="w-full border-2 border-gray-300 rounded-md p-2">
             <input
@@ -168,7 +165,6 @@ function Inbox() {
         ) : (
           ""
         )}
-        {showTask ? <CompletedTasks /> : ""}
       </div>
     </>
   );
