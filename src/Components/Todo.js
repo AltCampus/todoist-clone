@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ALL_PERSONAL_TASKS } from "../queries/index";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import Loader from "./Loader";
 import { TodoContext } from "../App";
-import { TOGGLE_TASK_COMPLETION } from "../queries/index";
+import {
+  TOGGLE_TASK_COMPLETION,
+  DELETE_PERSONAL_TASK_QUERY,
+} from "../queries/index";
 import {
   FETCH_ALL_PERSONAL_TASK,
   MARK_AS_COMPLETED,
+  DELETE_PERSONAL_TASK,
 } from "../store/action/type";
-import { useMutation } from "@apollo/react-hooks";
+
+import EditTask from "./EditTask";
 
 function Todo({ insertedData, isShowingCompletedTasks }) {
-  const [updatedTask, setupdatedTask] = useState("");
-  const [editTask, setEditTask] = useState("");
-  
+  const [editTask, setEditTask] = useState(null);
 
-  const [iconVisibility, setVisibility] = useState("");
   const context = useContext(TodoContext); // Contetx
   var { loading, error, data } = useQuery(ALL_PERSONAL_TASKS);
-  
+  var [isLoading, setIsLoading] = useState(false);
+
   const [
     toggleIsCompleted,
     { updateloading, updateerror },
@@ -32,18 +35,42 @@ function Todo({ insertedData, isShowingCompletedTasks }) {
         },
       }
     ) => {
-      setupdatedTask(returning[0].task_id);
+      context.dispatch({
+        type: MARK_AS_COMPLETED,
+        payload: returning[0].task_id,
+      });
+    },
+  });
+
+  const [
+    deleteTask,
+    { deleteLoading, errorInDelete },
+    deletedData,
+  ] = useMutation(DELETE_PERSONAL_TASK_QUERY, {
+    update: (
+      proxy,
+      {
+        data: {
+          delete_tasks: { returning },
+        },
+      }
+    ) => {
+      context.dispatch({ type: DELETE_PERSONAL_TASK, payload: returning[0] });
     },
   });
 
   useEffect(() => {
-    let {state: {personal_tasks}} = context;
+    let {
+      state: { personal_tasks },
+    } = context;
     if (data && !loading && !personal_tasks.length) {
       context.dispatch({ type: FETCH_ALL_PERSONAL_TASK, payload: data.tasks });
     }
   }, [data]);
 
-  
+  if (loading || updateloading || isLoading) {
+    return <Loader />;
+  }
 
   const handleCheck = (taskId, is_completed) => {
     toggleIsCompleted({
@@ -52,10 +79,19 @@ function Todo({ insertedData, isShowingCompletedTasks }) {
         task_id: taskId,
       },
     });
-    return context.dispatch({ type: MARK_AS_COMPLETED, payload: taskId });
   };
 
-  if (loading || updateloading) {
+  const handleDelete = (taskId) => {
+    if (taskId) {
+      deleteTask({
+        variables: {
+          task_id: taskId,
+        },
+      });
+    }
+  };
+
+  if (loading || updateloading || isLoading || deleteLoading) {
     return <Loader />;
   }
 
@@ -64,17 +100,15 @@ function Todo({ insertedData, isShowingCompletedTasks }) {
       {context.state.personal_tasks &&
         context.state.personal_tasks.map((task) => {
           if (task.is_completed !== isShowingCompletedTasks) {
-            return <></>;
+            return <React.Fragment key={task.task_id}></React.Fragment>;
           }
           return (
             <React.Fragment key={task.task_id}>
-              {task.task_id !== editTask ? (
+              {!editTask || (editTask && task.task_id !== editTask.task_id) ? (
                 <>
                   <div
                     key={`task${task.task_id}`}
-                    className="text-sm py-4 flex justify-between items-center"
-                    onMouseEnter={() => setVisibility(task.task_id)}
-                    onMouseLeave={() => setVisibility(task.task_id)}
+                    className="tasks_wrapper text-sm py-4 flex justify-between items-center w-full"
                   >
                     {task.task_id && (
                       <>
@@ -89,25 +123,25 @@ function Todo({ insertedData, isShowingCompletedTasks }) {
                             ) : (
                               <i className="far fa-circle cursor-pointer"></i>
                             )}
-                            <span className= {isShowingCompletedTasks ? "line-through ml-2 cursor-pointer":"ml-2 cursor-pointer"}>
+                            <span
+                              className={
+                                isShowingCompletedTasks
+                                  ? "line-through ml-2 cursor-pointer"
+                                  : "ml-2 cursor-pointer"
+                              }
+                            >
                               {task.title}
                             </span>
                           </div>
                         </div>
 
-                        <div
-                          className={
-                            iconVisibility === task.task_id
-                              ? `w-2/12 visible`
-                              : `invisible`
-                          }
-                        >
+                        <div className="task_update">
                           <ul className="flex justify-evenly items-center w-full">
-                            <li>
-                              <i className="far fa-comment-alt" />
-                            </li>
-                            <li onClick={() =>setEditTask(task.task_id)}>
+                            <li onClick={() => setEditTask(task)}>
                               <i className="fas fa-pencil-alt" />
+                            </li>
+                            <li onClick={() => handleDelete(task.task_id)}>
+                              <i className="far fa-trash-alt"></i>
                             </li>
                           </ul>
                         </div>
@@ -116,7 +150,11 @@ function Todo({ insertedData, isShowingCompletedTasks }) {
                   </div>
                 </>
               ) : (
-                <>Render EditTask component</>
+                <EditTask
+                  task={editTask}
+                  setEditTask={setEditTask}
+                  setIsLoading={setIsLoading}
+                />
               )}
             </React.Fragment>
           );

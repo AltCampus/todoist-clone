@@ -1,12 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { ADD_PERSONAL_TASK } from "../queries/index";
-import CompletedTasks from "./CompletedTasks";
+
 import { TodoContext } from "../App";
 import { INSERT_PERSONAL_TASK } from "../store/action/type";
 
 import { useMutation } from "@apollo/react-hooks";
 import Todo from "./Todo";
+import Loader from "./Loader";
 
 function Inbox() {
   const initialTask = { title: "", is_completed: false };
@@ -66,6 +67,10 @@ function Inbox() {
     setTasks(initialTask);
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <div className="container relative px-2 py-3 leading-none navbar-expand-lg mb-3 w-9/12">
@@ -102,7 +107,7 @@ function Inbox() {
               </li>
               <li className="nav-item ml-1">
                 <i
-                  class="fas fa-ellipsis-v cursor-pointer"
+                  className="fas fa-ellipsis-v cursor-pointer"
                   onClick={showDropdown}
                 />
                 {dropDown ? (
