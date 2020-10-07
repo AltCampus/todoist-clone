@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { ADD_PERSONAL_TASK } from "../queries/index";
-import CompletedTasks from "./CompletedTasks";
 import { TodoContext } from "../App";
 import { INSERT_PERSONAL_TASK } from "../store/action/type";
 
