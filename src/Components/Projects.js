@@ -1,26 +1,60 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import SingleProject from "./SingleProject";
+import { TodoContext } from "../App";
+
+import { CREATE_PROJECT_QUERY, FETCH_ALL_PROJECTS } from "../queries";
+import { CREATE_PROJECT, ALL_PROJECTS } from "../store/action/type";
 
 function Projects() {
-  const [createProjects, setCreateProjects] = useState(false);
-  const [input, setInput] = useState({ title: "" });
+  const context = useContext(TodoContext); // Contetx
+  const [projectInputBox, setProjectInputBox] = useState(false);
+  const [input, setInput] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [singleProject, showSingleProject] = useState("");
+  var { loading, error, data } = useQuery(FETCH_ALL_PROJECTS);
 
-  const dummyProjects = [
-    { id: 0, title: "Project #1", Todo: "Todo #1" },
-    { id: 1, title: "Project #2", Todo: "Todo #2" },
-    { id: 2, title: "Project #3", Todo: "Todo #3" },
-  ];
+  useEffect(() => {
+    if (data) {
+      return context.dispatch({ type: ALL_PROJECTS, payload: data.projects });
+    }
+  }, [data]);
 
-  const handleInput = (e) => {
-    setInput({ ...input, title: e.target.value });
-  };
+  const [
+    createProject,
+    { createProjectLoading, createProjectError },
+    newProject,
+  ] = useMutation(CREATE_PROJECT_QUERY, {
+    update: (
+      proxy,
+      {
+        data: {
+          insert_projects: { returning },
+        },
+      }
+    ) => {
+      // setInsertedDats(returning[0]);
+      if (returning[0])
+        context.dispatch({ type: CREATE_PROJECT, payload: returning[0] });
+        
+    },
+  });
+
+  // const handleInput = (e) => {
+  //   setInput();
+  // };
 
   const handleSubmit = () => {
-    console.log("working button");
+    
+    createProject({
+      variables: {
+        title: input,
+        project_id: Math.floor(Math.random(1000) * 13 * 19) + "",
+      },
+    });
+    setInput("");
   };
 
   const handleClick = (singleProject) => {
@@ -49,7 +83,7 @@ function Projects() {
               <NavLink
                 className="px-3 py-2 flex text-xs uppercase font-bold leading-snug text-black hover:opacity-75"
                 to="#pablo"
-                onClick={() => setCreateProjects(!createProjects)}
+                onClick={() => setProjectInputBox(!projectInputBox)}
               >
                 <i className="fas fa-plus"></i>
               </NavLink>
@@ -57,24 +91,24 @@ function Projects() {
           </ul>
         </div>
       </div>
-      {createProjects ? (
+      {projectInputBox ? (
         <div className="w-full border-2 border-gray-300 rounded-md p-2">
           <input
             type="text"
             placeholder="e.g. Conference Wednesday at 15 #Meeting"
             className="block p-3 w-full text-sm mb-2 outline-none rounded-md   bg-gray-100"
-            value={input.title}
-            onChange={handleInput}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <button
             className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow text-sm focus:outline-none"
             onClick={handleSubmit}
           >
-            Add task
+            Create project
           </button>
           <button
             className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow m-2 text-sm outline-none"
-            // onClick={handleCancel}
+            onClick={() => setProjectInputBox(false)}
           >
             Cancel
           </button>
@@ -82,24 +116,22 @@ function Projects() {
       ) : (
         ""
       )}
-      {dummyProjects.map((singleProject) => {
-        return (
-          <div
-            className="items-center mt-6"
-            onClick={() => handleClick(singleProject)}
-          >
-            <div>
-              <span className="ml-2 cursor-pointer">{singleProject.title}</span>
+      {context.state.projects &&
+        context.state.projects.map((project) => {
+          return (
+            <div
+              className="items-center mt-6"
+              onClick={() => handleClick(project)}
+            >
+              <div>
+                <span className="ml-2 cursor-pointer">{project.title}</span>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   ) : (
-    <SingleProject
-      singleProject={singleProject}
-      setIsClicked={setIsClicked}
-    />
+    <SingleProject singleProject={singleProject} setIsClicked={setIsClicked} />
   );
 }
 export default Projects;

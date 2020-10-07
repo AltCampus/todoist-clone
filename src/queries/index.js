@@ -77,11 +77,51 @@ export const EDIT_PERSONAL_TASK_QUERY = gql`
 `;
 
 export const DELETE_PERSONAL_TASK_QUERY = gql`
-mutation DELETE_PERSONAL_TASK_QUERY($task_id: String!) {
-  delete_tasks(where: {task_id: {_eq: $task_id}}) {
-    returning {
-      task_id
+  mutation DELETE_PERSONAL_TASK_QUERY($task_id: String!) {
+    delete_tasks(where: { task_id: { _eq: $task_id } }) {
+      returning {
+        task_id
+      }
     }
   }
-}
+`;
+
+// Projects
+
+export const CREATE_PROJECT_QUERY = gql`
+  mutation CREATE_PROJECT($title: String!, $project_id: String!) {
+    insert_projects(objects: { title: $title, project_id: $project_id }) {
+      returning {
+        project_id
+        title
+        created_at
+        updated_at
+        tasks(order_by: { created_at: asc }) {
+          task_id
+          title
+          is_completed
+          created_at
+          updated_at
+        }
+      }
+    }
+  }
+`;
+
+export const FETCH_ALL_PROJECTS = gql`
+  query FETCH_ALL_PROJECTS {
+    projects(order_by: { created_at: asc }) {
+      project_id
+      title
+      created_at
+      updated_at
+      tasks(order_by: { created_at: asc }) {
+        task_id
+        title
+        is_completed
+        created_at
+        updated_at
+      }
+    }
+  }
 `;

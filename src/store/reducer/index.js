@@ -3,11 +3,14 @@ import {
   FETCH_ALL_PERSONAL_TASK,
   MARK_AS_COMPLETED,
   EDIT_PERSONAL_TASK,
-  DELETE_PERSONAL_TASK
+  DELETE_PERSONAL_TASK,
+  CREATE_PROJECT,
+  ALL_PROJECTS,
 } from "../action/type";
 
 const initialState = {
   personal_tasks: [],
+  projects: [],
 };
 
 function reducer(state = initialState, action) {
@@ -32,17 +35,26 @@ function reducer(state = initialState, action) {
     case EDIT_PERSONAL_TASK:
       state.personal_tasks = state.personal_tasks.map((task) => {
         if (task.task_id === action.payload.task_id) {
-          console.log({ payload: action.payload });
           return action.payload;
         }
         return task;
       });
       return { ...state };
 
-    case DELETE_PERSONAL_TASK: 
-      console.log({payload: action.payload})
-      state.personal_tasks = state.personal_tasks.filter(task => task.task_id !== action.payload.task_id);
-      return {...state};
+    case DELETE_PERSONAL_TASK:
+      state.personal_tasks = state.personal_tasks.filter(
+        (task) => task.task_id !== action.payload.task_id
+      );
+      return { ...state };
+
+    // Projects
+
+    case CREATE_PROJECT:
+      
+      console.log({ ...state, projects: [...state.projects, action.payload] })
+      return { ...state, projects: [...state.projects, action.payload] };
+    case ALL_PROJECTS:
+      return { ...state, projects: [...action.payload] };
     default:
       return state;
   }
