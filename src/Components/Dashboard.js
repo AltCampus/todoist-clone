@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import CompletedTasks from "./CompletedTasks";
 import Inbox from "./Inbox";
 import Projects from "./Projects";
 import { ReactComponent as DashBoardLogo1 } from "../assets/images/dashBoardLogo1.svg";
 import { ReactComponent as BigTodoistLogo } from "../assets/images/todoistLogoBig.svg";
 import { ReactComponent as DashBoardDropDown } from "../assets/images/dashBoardDropDown.svg";
+
 
 function Dashboard(props) {
   const [dropdown, setDropdown] = useState(false);
@@ -17,12 +17,17 @@ function Dashboard(props) {
   const List = [
     { name: "Inbox", component: <Inbox /> },
     { name: "Projects", component: <Projects /> },
-    { name: "Completed", component: <CompletedTasks /> },
   ];
   const handleChange = (list) => {
     setActiveList(list.name);
     setActiveComponent(list.component);
   };
+
+  useEffect(() => {
+    setActiveList(List[0].name);
+    setActiveComponent(List[0].component);
+
+  },[]);
 
   return (
     <>
