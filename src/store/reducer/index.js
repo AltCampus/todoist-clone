@@ -1,8 +1,9 @@
-import { act } from "react-dom/test-utils";
 import {
   INSERT_PERSONAL_TASK,
   FETCH_ALL_PERSONAL_TASK,
   MARK_AS_COMPLETED,
+  EDIT_PERSONAL_TASK,
+  DELETE_PERSONAL_TASK
 } from "../action/type";
 
 const initialState = {
@@ -27,6 +28,21 @@ function reducer(state = initialState, action) {
         return task;
       });
       return { ...state };
+
+    case EDIT_PERSONAL_TASK:
+      state.personal_tasks = state.personal_tasks.map((task) => {
+        if (task.task_id === action.payload.task_id) {
+          console.log({ payload: action.payload });
+          return action.payload;
+        }
+        return task;
+      });
+      return { ...state };
+
+    case DELETE_PERSONAL_TASK: 
+      console.log({payload: action.payload})
+      state.personal_tasks = state.personal_tasks.filter(task => task.task_id !== action.payload.task_id);
+      return {...state};
     default:
       return state;
   }

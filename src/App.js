@@ -1,6 +1,6 @@
-import React, { useContext, useReducer } from "react";
+import React, { useReducer } from "react";
 import Home from "./Components/Home";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
 import Login from "./Components/Login";
 import reducer from "./store/reducer/index";
