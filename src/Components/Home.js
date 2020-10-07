@@ -5,8 +5,6 @@ import { ReactComponent as BigLogo } from "../assets/images/todoistLogoBig.svg";
 import { ReactComponent as LogoSmall } from "../assets/images/logoSmall.svg";
 
 function Home(props) {
-  console.log(props);
-
   return (
     <div className="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
       <nav id="header" className="w-full z-30 top-0 py-1">
@@ -142,29 +140,29 @@ function Home(props) {
           </p>
         </div>
       </section>
-      <footer className="container mx-auto bg-white py-8 border-t border-gray-400">
+      <footer className="container mx-auto bg-white border-t border-gray-400">
         <div className="container flex px-3 py-8 ">
           <div className="w-full mx-auto flex flex-wrap">
             <div className="flex w-full lg:w-1/2 ">
               <div className="px-3 md:px-0">
-                <h3 className="font-bold text-gray-900">About</h3>
-                <p className="py-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Maecenas vel mi ut felis tempus commodo nec id erat.
-                  Suspendisse consectetur dapibus velit ut lacinia.
-                </p>
+                <p className="py-4">&copy; AltCampus (2020)</p>
               </div>
             </div>
             <div className="flex w-full lg:w-1/2 lg:justify-end lg:text-right">
               <div className="px-3 md:px-0">
-                <h3 className="font-bold text-gray-900">Social</h3>
                 <ul className="list-reset items-center pt-3">
                   <li>
                     <Link
                       className="inline-block no-underline hover:text-black hover:underline py-1"
                       to=""
                     >
-                      Twitter
+                      <i class="fab fa-twitter fa-2x"></i>
+                    </Link>
+                    <Link
+                      className="inline-block no-underline hover:text-black hover:underline py-1"
+                      to=""
+                    >
+                      <i class="fab fa-github-alt fa-2x"></i>
                     </Link>
                   </li>
                 </ul>

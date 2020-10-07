@@ -74,19 +74,19 @@ function Dashboard(props) {
                             aria-labelledby="options-menu"
                           >
                             <div className="py-1">
-                              <a
+                              <div
                                 className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                                 role="menuitem"
                               >
                                 Setting
-                              </a>
-                              <a
+                              </div>
+                              <div
                                 onClick={() => props.data.logout()}
                                 className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                                 role="menuitem"
                               >
                                 Log out
-                              </a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -119,11 +119,11 @@ function Dashboard(props) {
                           : ""
                       }`}
                     >
-                      <a className="block pl-4 align-middle text-gray-700 no-underline hover:text-orange-600">
+                      <div className="block pl-4 align-middle text-gray-700 no-underline hover:text-orange-600">
                         <span className="pb-1 md:pb-0 text-sm">
                           {list.name}
                         </span>
-                      </a>
+                      </div>
                     </li>
                   );
                 })}
