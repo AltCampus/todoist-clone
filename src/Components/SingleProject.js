@@ -1,14 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import Todo from "./Todo";
+import ProjectTasks from "./ProjectTasks";
+import { useMutation } from "@apollo/react-hooks";
+import { ADD_PROJECT_TASK } from "../store/action/type";
+import { ADD_PROJECT_TASK_QUERY } from "../queries/index";
+import { TodoContext } from "../App";
+import { useEffect } from "react";
 
 function SingleProject(props) {
+  const context = useContext(TodoContext); // Contetx
   const [input, setInput] = useState(false);
-  const [tasks, setTasks] = useState("initialTask");
+  const [task, setTasks] = useState("");
   const [taskFilteredOn, setTaskFilteredOn] = useState("All Completed Task");
   const [dropDown, setdropDown] = useState(false);
   const [showTask, setCompletedTask] = useState(false);
-  console.log(props);
+
+  const [addProjectTask, { loading, error }, data] = useMutation(
+    ADD_PROJECT_TASK_QUERY,
+    {
+      update: (
+        proxy,
+        {
+          data: {
+            insert_tasks: { returning },
+          },
+        }
+      ) => {
+        if (returning[0])
+          context.dispatch({ type: ADD_PROJECT_TASK, payload: returning[0] });
+      },
+    }
+  );
+
+  function handleSubmit() {
+    addProjectTask({
+      variables: {
+        title: task,
+        task_id: Math.floor(Math.random(1000) * 13 * 19) + "",
+        project_id: context.state.projects[props.singleProjectIndex].project_id,
+      },
+    });
+    setInput("");
+
+    return setTasks("");
+  }
+
+  const showDropdown = () => {
+    setdropDown(!dropDown);
+  };
+
+  const showCompleted = () => {
+    setCompletedTask(!showTask);
+    setdropDown(!dropDown);
+    if (taskFilteredOn === "All Completed Task") {
+      setTaskFilteredOn("All Incomplete Task");
+    } else {
+      setTaskFilteredOn("All Completed Task");
+    }
+  };
+
+  const handleCancel = () => {
+    setInput(false);
+    setTasks("");
+  };
+
   return (
     <>
       {/* <div>
@@ -55,7 +110,7 @@ function SingleProject(props) {
               <li className="nav-item ml-1">
                 <i
                   class="fas fa-ellipsis-v cursor-pointer"
-                  // onClick={showDropdown}
+                  onClick={showDropdown}
                 />
                 {dropDown ? (
                   <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
@@ -70,7 +125,7 @@ function SingleProject(props) {
                           to="#"
                           className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                           role="menuitem"
-                          // onClick={showCompleted}
+                          onClick={showCompleted}
                         >
                           Show {taskFilteredOn}
                         </NavLink>
@@ -91,7 +146,12 @@ function SingleProject(props) {
             </ul>
           </div>
         </div>
-        <Todo isShowingCompletedTasks={showTask} />
+        {
+          <ProjectTasks
+            singleProjectIndex={props.singleProjectIndex}
+            isShowingCompletedTasks={showTask}
+          />
+        }
 
         {input ? (
           <div className="w-full border-2 border-gray-300 rounded-md p-2">
@@ -99,18 +159,18 @@ function SingleProject(props) {
               type="text"
               placeholder="e.g. Conference Wednesday at 15 #Meeting"
               className="block p-3 w-full text-sm mb-2 outline-none rounded-md   bg-gray-100"
-              value={tasks.title}
-              // onChange={handleInput}
+              value={task}
+              onChange={(e) => setTasks(e.target.value)}
             />
             <button
               className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow text-sm focus:outline-none"
-              // onClick={handleSubmit}
+              onClick={handleSubmit}
             >
               Add task
             </button>
             <button
               className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow m-2 text-sm outline-none"
-              // onClick={handleCancel}
+              onClick={handleCancel}
             >
               Cancel
             </button>

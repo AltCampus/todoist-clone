@@ -33,22 +33,7 @@ export const TOGGLE_TASK_COMPLETION = gql`
       where: { task_id: { _eq: $task_id } }
     ) {
       returning {
-        task_id
-        title
-        is_completed
-        created_at
-        updated_at
-      }
-    }
-  }
-`;
-
-export const ADD_PROJECT_TASK = gql`
-  mutation ADD_TASK($title: String!, $project_id: String, $task_id: String) {
-    insert_tasks(
-      objects: { title: $title, project_id: $project_id, task_id: $task_id }
-    ) {
-      returning {
+        project_id
         task_id
         title
         is_completed
@@ -116,6 +101,7 @@ export const FETCH_ALL_PROJECTS = gql`
       created_at
       updated_at
       tasks(order_by: { created_at: asc }) {
+        project_id
         task_id
         title
         is_completed
@@ -125,3 +111,71 @@ export const FETCH_ALL_PROJECTS = gql`
     }
   }
 `;
+
+export const ADD_PROJECT_TASK_QUERY = gql`
+  mutation ADD_TASK($title: String!, $project_id: String, $task_id: String) {
+    insert_tasks(
+      objects: { title: $title, project_id: $project_id, task_id: $task_id }
+    ) {
+      returning {
+        project_id
+        task_id
+        title
+        is_completed
+        created_at
+        updated_at
+      }
+    }
+  }
+`;
+
+export const ALL_PROJECT_TASKS = gql`
+  query ALL_PROJECT_TASKS($project_id: String!) {
+    tasks(
+      order_by: { created_at: asc }
+      where: { project_id: { _eq: $project_id } }
+    ) {
+      project_id
+      task_id
+      title
+      is_completed
+      created_at
+      updated_at
+    }
+  }
+`;
+
+export const EDIT_PROJECT_TASK_QUERY = gql`
+  mutation EDIT_PERSONAL_TASK_QUERY(
+    $title: String!
+    $task_id: String!
+    $project_id: String!
+  ) {
+    update_tasks(
+      _set: { title: $title }
+      where: { task_id: { _eq: $task_id }, project_id: { _eq: $project_id } }
+    ) {
+      returning {
+        project_id
+        task_id
+        title
+        is_completed
+        created_at
+        updated_at
+      }
+    }
+  }
+`;
+
+
+export const DELETE_PROJECT_TASK_QUERY = gql`
+  mutation DELETE_PROJECT_TASK_QUERY($task_id: String!, $project_id: String!) {
+    delete_tasks(where: { task_id: { _eq: $task_id }, project_id: { _eq: $project_id } }) {
+      returning {
+        task_id
+        project_id
+      }
+    }
+  }
+`;
+

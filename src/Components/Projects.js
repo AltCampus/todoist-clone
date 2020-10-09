@@ -57,10 +57,10 @@ function Projects() {
     setInput("");
   };
 
-  const handleClick = (singleProject) => {
+  const handleClick = (projectIndex) => {
     setIsClicked(true);
-    showSingleProject(singleProject);
-    console.log(singleProject);
+    showSingleProject(projectIndex);
+    
   };
 
   return !isClicked ? (
@@ -117,11 +117,11 @@ function Projects() {
         ""
       )}
       {context.state.projects &&
-        context.state.projects.map((project) => {
+        context.state.projects.map((project,index) => {
           return (
             <div
               className="items-center mt-6"
-              onClick={() => handleClick(project)}
+              onClick={() => handleClick(index)}
             >
               <div>
                 <span className="ml-2 cursor-pointer">{project.title}</span>
@@ -131,7 +131,7 @@ function Projects() {
         })}
     </div>
   ) : (
-    <SingleProject singleProject={singleProject} setIsClicked={setIsClicked} />
+    <SingleProject singleProjectIndex={singleProject} setIsClicked={setIsClicked} />
   );
 }
 export default Projects;

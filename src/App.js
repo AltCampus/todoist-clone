@@ -40,17 +40,15 @@ export const TodoContext = React.createContext();
 
 function AuthRoutes() {
   return (
-    <Route exact path="/dashboard">
-      <Dashboard />
-    </Route>
+    <Route exact path="/dashboard" component={Dashboard} />
+      
+    
   );
 }
 
 function NonAuthRoutes() {
   return (
-    <Route exact path="/login">
-      <Login />
-    </Route>
+    <Route exact path="/login" component={Login} />
   );
 }
 
