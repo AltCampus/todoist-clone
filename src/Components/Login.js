@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import todoistLogin from "../assets/images/todoist-login.webp";
 
 function Login() {
+  const history = useHistory();
   const [loginDetails, setLoginDetails] = useState({
     adminSecret: "",
     endpoint: "",
@@ -19,6 +20,8 @@ function Login() {
     e.preventDefault();
     localStorage.setItem("adminSecret", loginDetails.adminSecret);
     localStorage.setItem("endPoint", loginDetails.endpoint);
+    history.push("/dashboard");
+
   };
 
   return (

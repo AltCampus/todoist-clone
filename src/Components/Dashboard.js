@@ -8,6 +8,7 @@ import { ReactComponent as DashBoardDropDown } from "../assets/images/dashBoardD
 
 
 function Dashboard(props) {
+  
   const [dropdown, setDropdown] = useState(false);
   const [activeList, setActiveList] = useState(null);
   const [activeComponent, setActiveComponent] = useState("");
@@ -24,6 +25,7 @@ function Dashboard(props) {
   };
 
   useEffect(() => {
+    
     setActiveList(List[0].name);
     setActiveComponent(List[0].component);
 
